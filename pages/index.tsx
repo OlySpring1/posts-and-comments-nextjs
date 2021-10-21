@@ -4,8 +4,6 @@ import ListPost from 'components/ListPost/ListPost';
 
 
 function Blog({ posts })  {
-  console.log('posts', posts);
-  
   return (
     <ListPost posts={posts}/>
   )

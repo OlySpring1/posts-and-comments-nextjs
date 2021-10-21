@@ -12,4 +12,7 @@ export const Title = styled.h2`
   font-size: 20px;
   font-weight: 600;
 `;
-export const Body = styled.p``;
+export const Body = styled.p`
+  font-size: 14px;
+  text-transform: capitalize;
+`;

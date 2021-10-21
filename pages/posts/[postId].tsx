@@ -1,37 +1,31 @@
 import axios from "axios";
 import { useRouter } from "next/router";
 import Post from "components/Post/Post";
+import { useEffect, useState } from "react";
 
-const PostPage = ({post}) => {
+const PostPage = ({ post }) => {
+  const [isRefreshing, setIsRefreshing] = useState(false);
   const router = useRouter();
-  const { postId: IdPost } = router.query;
-  console.log('postPost', post);
-  
-  return <Post post={post}/>;
+  const refreshData = () => {
+    router.replace(router.asPath);
+    setIsRefreshing(true);
+  };
+
+  useEffect(() => {
+    setIsRefreshing(false);
+  }, [post]);
+  return <Post post={post} refreshData={refreshData} />;
 };
 
-export async function getStaticPaths() {
-  const res = await axios.get("https://simple-blog-api.crew.red/posts");
-  //@ts-ignore
-  const posts: IPost[] = await res.data;
-
-  const paths = posts.map((post) => ({
-    params: { postId: `${post.id}` },
-  }));
-
-  return { paths, fallback: false };
-}
-
-export const getStaticProps = async ({params}) => {
-  console.log('params', params);
-  
+export const getServerSideProps = async ({ query: { postId } }) => {
   const res = await axios.get(
-    `https://simple-blog-api.crew.red/posts/${params.postId}?_embed=comments`
+    `https://simple-blog-api.crew.red/posts/${postId}?_embed=comments`
   );
   const post = await res.data;
+
   return {
     props: {
-      post
+      post,
     },
   };
 };

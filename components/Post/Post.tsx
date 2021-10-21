@@ -1,25 +1,30 @@
-import Button from "components/Button/Button";
-import CommentText from "components/CommentText/CommentText";
-import { MainWrapper } from "components/ListPost/styled";
+import CreateComment from "components/CreateComment/CreateComment";
+import { MainWrapper, StyledLink } from "components/ListPost/styled";
 import { Title } from "components/PostCard/styled";
-import { Description, Row } from "./styled";
+import { Description, Row, TitlePost, Comment } from "./styled";
+import Link from "next/link";
 
-const Post = ({ post }) => {
-  
+const Post = ({ post, refreshData }) => {
   return (
     <MainWrapper>
-      <Title>{post.title}</Title>
-      <Description>{post.body}</Description>
       <Row>
-      <Title>Comments:</Title>
-      <Button onClick={() =>console.log('Add Comments')}>
-        Add Comment
-      </Button>
+        <TitlePost>{post.title}</TitlePost>
+        <Link href="/">
+          <StyledLink>
+            <a>Posts</a>
+          </StyledLink>
+        </Link>
+      </Row>
+      <Description>{post.body}</Description>
+      <CreateComment postId={post.id} refreshData={refreshData} />
+      <Row>
+        {!!post.comments.length && (
+          <Title>{post.comments.length} comments:</Title>
+        )}
       </Row>
       {post.comments.map((comment) => (
-        <div>{comment.body}</div>
+        <Comment key={comment.id}>{comment.body}</Comment>
       ))}
-      <CommentText/>
     </MainWrapper>
   );
 };

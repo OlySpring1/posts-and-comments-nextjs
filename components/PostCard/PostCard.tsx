@@ -3,7 +3,6 @@ import Link from "next/link";
 import { StyledWrapper, Title, Body } from "./styled";
 
 const PostCard = ({ post }) => {
-  console.log(post);
   return (
     <StyledWrapper>
       <Title>
